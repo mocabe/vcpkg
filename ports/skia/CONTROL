@@ -10,3 +10,7 @@ Build-Depends: expat, freetype[core], icu, harfbuzz[icu], libjpeg-turbo, libpng,
 
 Feature: metal
 Description: metal support for skia
+
+Feature: vulkan
+Description: vulkan support for skia 
+Build-Depends: vulkan

@@ -126,6 +126,11 @@ if("metal" IN_LIST FEATURES)
     list(APPEND SKIA_PUBLIC_DEFINITIONS SK_METAL)
 endif()
 
+if("vulkan" IN_LIST FEATURES)
+    set(OPTIONS "${OPTIONS} skia_use_vulkan=true")
+    list(APPEND SKIA_PUBLIC_DEFINITIONS SK_VK)
+endif()
+
 set(OPTIONS_REL "${OPTIONS} is_official_build=true")
 set(OPTIONS_DBG "${OPTIONS} is_debug=true")
 
