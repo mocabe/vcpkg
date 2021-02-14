@@ -77,7 +77,7 @@ endfunction()
 
 # For each .gn file in the current list directory, configure and install at
 # the corresponding directory to replace Skia dependencies with ones from vcpkg.
-function(replace_skia_dep NAME INCLUDES LIBS_DBG LIBS_REL DEFINITIONS)
+function(replace_skia_dep NAME DIR INCLUDES LIBS_DBG LIBS_REL DEFINITIONS)
     list(TRANSFORM INCLUDES PREPEND "${CURRENT_INSTALLED_DIR}")
     cmake_to_gn_list(_INCLUDES "${INCLUDES}")
 
@@ -89,23 +89,25 @@ function(replace_skia_dep NAME INCLUDES LIBS_DBG LIBS_REL DEFINITIONS)
 
     cmake_to_gn_list(_DEFINITIONS "${DEFINITIONS}")
 
-    set(OUT_FILE "${SOURCE_PATH}/third_party/${NAME}/BUILD.gn")
+    set(OUT_FILE "${SOURCE_PATH}/third_party/${DIR}/BUILD.gn")
     file(REMOVE "${OUT_FILE}")
     configure_file("${CMAKE_CURRENT_LIST_DIR}/${NAME}.gn" "${OUT_FILE}" @ONLY)
 endfunction()
 
 set(_INCLUDE_DIR "${CURRENT_INSTALLED_DIR}/include")
 
-replace_skia_dep(expat "/include" "libexpat,libexpatd,libexpatdMD" "libexpat,libexpatMD" "")
-replace_skia_dep(freetype2 "/include" "freetype,freetyped" "freetype" "")
-replace_skia_dep(harfbuzz "/include/harfbuzz" "harfbuzz-icu" "harfbuzz-icu" "")
-replace_skia_dep(icu "/include" "icuuc,icuucd" "icuuc" "U_USING_ICU_NAMESPACE=0")
-replace_skia_dep(libjpeg-turbo "/include" "jpeg,jpegd;turbojpeg,turbojpegd" "jpeg;turbojpeg" "")
-replace_skia_dep(libpng "/include" "libpng16,libpng16d" "libpng16" "")
-replace_skia_dep(libwebp "/include" 
+replace_skia_dep(expat         "expat"         "/include"          "libexpat,libexpatd,libexpatdMD"  "libexpat,libexpatMD" "")
+replace_skia_dep(freetype2     "freetype2"     "/include"          "freetype,freetyped"              "freetype"            "")
+replace_skia_dep(harfbuzz      "harfbuzz"      "/include/harfbuzz" "harfbuzz-icu"                    "harfbuzz-icu"        "")
+replace_skia_dep(icu           "icu"           "/include"          "icuuc,icuucd"                    "icuuc"               "U_USING_ICU_NAMESPACE=0")
+replace_skia_dep(libjpeg-turbo "libjpeg-turbo" "/include"          "jpeg,jpegd;turbojpeg,turbojpegd" "jpeg;turbojpeg"      "")
+replace_skia_dep(libpng        "libpng"        "/include"          "libpng16,libpng16d"              "libpng16"            "")
+replace_skia_dep(zlib          "zlib"          "/include"          "z,zlib,zlibd"                    "z,zlib"              "")
+replace_skia_dep(fontconfig    ""              "/include"          "fontconfig"                      "fontconfig"          "")
+replace_skia_dep(libwebp       
+    "libwebp" "/include"   
     "webp,webpd;webpdemux,webpdemuxd;webpdecoder,webpdecoderd;libwebpmux,libwebpmuxd" 
     "webp;webpdemux;webpdecoder;libwebpmux" "")
-replace_skia_dep(zlib "/include" "z,zlib,zlibd" "z,zlib" "")
 
 set(OPTIONS "\
 skia_use_lua=false \
